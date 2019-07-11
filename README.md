@@ -3,7 +3,61 @@
 
 Welcome to my solution of the Engineering Challenge repository 🖖
 
+unbabel_cli.py will take a text file with translation event json lines (can be unsorted) and calculate the moving 
+average (for every minute within scope), according to the specified options which can be the time window to analyze, 
+client, source or target language.
+#### Installation
 
+You'll need pandas (https://pandas.pydata.org).
+```
+pip3 install pandas
+```
+
+#### Usage
+
+```
+$ python3 unbabel_cli.py -h
+usage: unbabel_cli.py [-h] -i <filename> [-w <minutes>] [-c <name>]
+                      [-s <language>] [-t <language>]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i <filename>, --input_file <filename>
+                        text file with json lines
+  -w <minutes>, --window <minutes>, --window_size <minutes>
+                        Time period (minutes) to calculate the moving average.
+                        Example: 10 -- If the most recent entry is from 17:11,
+                        it will be calculated for every minute between 17:02
+                        and 17:11. If not specified, range will be between
+                        firstand last entry.
+  -c <name>, --client <name>
+                        Filter for a specific client.
+  -s <language>, --source <language>
+                        Source language (en,fr,de,etc.) calculate only for
+                        translations with source text in this language
+  -t <language>, --target <language>
+                        Target language (en,fr,de,etc.) calculate only when
+                        translation was for this language
+
+```
+
+
+##### Examples
+
+-- Calculate moving average for all entries in example.json :
+```
+$ python3 unbabel_cli.py --input_file example.json
+```
+
+-- Calculate moving average for the last 20 minutes :
+```
+$ python3 unbabel_cli.py --input_file example.json --window_size 20
+```
+
+-- Calculate moving average for the last 15 minutes but consider only translations for customer 'Vandelay Industries' with source text in english :
+```
+$ python3 unbabel_cli.py --input_file example.json --window_size 15 --client vandelay --source en
+```
 ## Challenge Scenario
 
 At Unbabel we deal with a lot of translation data. One of the metrics we use for our clients' SLAs is the delivery time of a translation. 
@@ -60,55 +114,4 @@ The output file would be something in the following format.
 {"date": "2018-12-26 18:24:00", "average_delivery_time": 42.5}
 ```
 
-#### Installation
 
-You'll need pandas (https://pandas.pydata.org).
-```
-pip3 install pandas
-```
-
-#### Usage
-
-```
-$ python3 unbabel_cli.py -h
-usage: unbabel_cli.py [-h] -i <filename> [-w <minutes>] [-c <name>]
-                      [-s <language>] [-t <language>]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -i <filename>, --input_file <filename>
-                        text file with json lines
-  -w <minutes>, --window <minutes>, --window_size <minutes>
-                        Time period (minutes) to calculate the moving average.
-                        Example: 10 -- If the most recent entry is from 17:11,
-                        it will be calculated for every minute between 17:02
-                        and 17:11. If not specified, range will be between
-                        firstand last entry.
-  -c <name>, --client <name>
-                        Filter for a specific client.
-  -s <language>, --source <language>
-                        Source language (en,fr,de,etc.) calculate only for
-                        translations with source text in this language
-  -t <language>, --target <language>
-                        Target language (en,fr,de,etc.) calculate only when
-                        translation was for this language
-
-```
-
-
-##### Examples
-
--- Calculate moving average for all entries in example.json :
-```
-$ python3 unbabel_cli --input_file example.json
-```
-
--- Calculate moving average for the last 20 minutes :
-```
-$ python3 unbabel_cli --input_file example.json --window_size 20
-```
-
--- Calculate moving average for the last 15 minutes but consider only translations for customer 'Vandelay Industries' with source text in english :
-```
-$ python3 unbabel_cli --input_file example.json --window_size 15 --client vandelay --source en
-```
