@@ -1,15 +1,8 @@
 # Backend Engineering Challenge
 
 
-Welcome to our Engineering Challenge repository 🖖
+Welcome to my solution of the Engineering Challenge repository 🖖
 
-If you found this repository it probably means that you are participating in our recruitment process. Thank you for your time and energy. If that's not the case please take a look at our [openings](https://unbabel.com/careers/) and apply!
-
-Please fork this repo before you start working on the challenge, read it careful and take your time and think about the solution. Also, please fork this repository because we will evaluate the code on the fork.
-
-This is an opportunity for us both to work together and get to know each other in a more technical way. If have some doubt please open and issue and we'll reach out to help.
-
-Good luck!
 
 ## Challenge Scenario
 
@@ -52,7 +45,6 @@ The input file format would be something like:
 The output file would be something in the following format.
 
 ```
-{"date": "2018-12-26 18:11:00", "average_delivery_time": 0}
 {"date": "2018-12-26 18:12:00", "average_delivery_time": 20}
 {"date": "2018-12-26 18:13:00", "average_delivery_time": 20}
 {"date": "2018-12-26 18:14:00", "average_delivery_time": 20}
@@ -68,21 +60,55 @@ The output file would be something in the following format.
 {"date": "2018-12-26 18:24:00", "average_delivery_time": 42.5}
 ```
 
-#### Notes
+#### Installation
 
-Before jumping right into implementation we advise you to think about the solution first. We will evaluate, not only if your solution works but also the following aspects:
+You'll need pandas (https://pandas.pydata.org).
+```
+pip3 install pandas
+```
 
-+ Simple and easy to read code. Remember that [simple is not easy](https://www.infoq.com/presentations/Simple-Made-Easy)
-+ Include a README.md that briefly describes how to build and run your code
-+ Be consistent in your code. 
+#### Usage
 
-Feel free to, in your solution, include some your considerations while doing this challenge. We want you to solve this challenge in the language you feel most confortable with. Our machines run Python, Ruby, Scala, Java, Clojure, Elixir and Nodejs. If you are thinking of using any other programming language please reach out to us first 🙏.
+```
+$ python3 unbabel_cli.py -h
+usage: unbabel_cli.py [-h] -i <filename> [-w <minutes>] [-c <name>]
+                      [-s <language>] [-t <language>]
 
-Also if you have any problem please **open an issue**. 
+optional arguments:
+  -h, --help            show this help message and exit
+  -i <filename>, --input_file <filename>
+                        text file with json lines
+  -w <minutes>, --window <minutes>, --window_size <minutes>
+                        Time period (minutes) to calculate the moving average.
+                        Example: 10 -- If the most recent entry is from 17:11,
+                        it will be calculated for every minute between 17:02
+                        and 17:11. If not specified, range will be between
+                        firstand last entry.
+  -c <name>, --client <name>
+                        Filter for a specific client.
+  -s <language>, --source <language>
+                        Source language (en,fr,de,etc.) calculate only for
+                        translations with source text in this language
+  -t <language>, --target <language>
+                        Target language (en,fr,de,etc.) calculate only when
+                        translation was for this language
 
-Good luck and may the force be with you
+```
 
-#### Extra points
 
-If you feeling creative feel free to consider any additional cases you might find interesting. Remember this is a bonus, focus on delivering the solution first.
+##### Examples
 
+-- Calculate moving average for all entries in example.json :
+```
+$ python3 unbabel_cli --input_file example.json
+```
+
+-- Calculate moving average for the last 20 minutes :
+```
+$ python3 unbabel_cli --input_file example.json --window_size 20
+```
+
+-- Calculate moving average for the last 15 minutes but consider only translations for customer 'Vandelay Industries' with source text in english :
+```
+$ python3 unbabel_cli --input_file example.json --window_size 15 --client vandelay --source en
+```
